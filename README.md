@@ -1,8 +1,8 @@
 # cbor
 Simple CBOR encoder/ decoder used in/for my Collection "DB"-Thing.
 
-Simple usage:
-
+## Usage
+```javascript
 var object = {
   string: "Hello",
   number: 12345,
@@ -11,3 +11,4 @@ var object = {
 
 var encoded = CBOR.encode(object)
 var decoded = CBOR.decode(encoded)
+```
