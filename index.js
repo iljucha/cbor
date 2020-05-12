@@ -1,10 +1,10 @@
-import { BinaryHex } from "./binaryhex.js"
-import { Reader } from "./reader.js"
-import { Writer } from "./writer.js"
-import { BufferReader } from "./buffer-reader.js"
-import { BufferWriter } from "./buffer-writer.js"
-import { HexReader } from "./hex-reader.js"
-import { HexWriter } from "./hex-writer.js"
+import BinaryHex from "./binaryhex.js"
+import Reader from "./reader.js"
+import Writer from "./writer.js"
+import BufferReader from "./buffer-reader.js"
+import BufferWriter from "./buffer-writer.js"
+import HexReader from "./hex-reader.js"
+import HexWriter from "./hex-writer.js"
 
 var CBOR = (function () {
 	let addEncoders = []
@@ -26,15 +26,20 @@ var CBOR = (function () {
 		let value = header.value
 		if (value < 24) {
 			return value
-		} else if (value == 24) {
+		}
+		else if (value == 24) {
 			return reader.readByte()
-		} else if (value == 25) {
+		}
+		else if (value == 25) {
 			return reader.readUint16()
-		} else if (value == 26) {
+		}
+		else if (value == 26) {
 			return reader.readUint32()
-		} else if (value == 27) {
+		}
+		else if (value == 27) {
 			return reader.readUint64()
-		} else if (value == 31) {
+		}
+		else if (value == 31) {
 			return null
 		}
 		throw new Error(label, "not implemented.")
@@ -48,16 +53,20 @@ var CBOR = (function () {
 		let firstByte = type<<5
 		if (value < 24) {
 			writer.writeByte(firstByte|value)
-		} else if (value < 256) {
+		}
+		else if (value < 256) {
 			writer.writeByte(firstByte|24)
 			writer.writeByte(value)
-		} else if (value < 65536) {
+		}
+		else if (value < 65536) {
 			writer.writeByte(firstByte|25)
 			writer.writeUint16(value)
-		} else if (value < 4294967296) {
+		}
+		else if (value < 4294967296) {
 			writer.writeByte(firstByte|26)
 			writer.writeUint32(value)
-		} else {
+		}
+		else {
 			writer.writeByte(firstByte|27)
 			writer.writeUint64(value)
 		}
@@ -88,7 +97,8 @@ var CBOR = (function () {
 					for (i = 0; i < arrayLength; i++) {
 						result[i] = decodeReader(reader)
 					}
-				} else {
+				}
+				else {
 					while ((item = decodeReader(reader)) !== new Error()) {
 						result.push(item)
 					}
@@ -99,7 +109,8 @@ var CBOR = (function () {
 						objResult[result[i]] = result[i + 1]
 					}
 					return objResult
-				} else {
+				}
+				else {
 					return result
 				}
 			case 6:
@@ -110,9 +121,11 @@ var CBOR = (function () {
 			case 7:
 				if (header.value === 25) {
 					return reader.readFloat16()
-				} else if (header.value === 26) {
+				}
+				else if (header.value === 26) {
 					return reader.readFloat32()
-				} else if (header.value === 27) {
+				}
+				else if (header.value === 27) {
 					return reader.readFloat64()
 				}
 				switch (valueFromHeader(header, reader)) {
@@ -143,20 +156,22 @@ var CBOR = (function () {
 				return encodeWriter(replacement, writer)
 			}
 		}
-	
 		if (data && typeof data.toCBOR === "function") {
 			data = data.toCBOR()
 		}
-	
 		if (data === false) {
 			writeHeader(7, 20, writer)
-		} else if (data === true) {
+		}
+		else if (data === true) {
 			writeHeader(7, 21, writer)
-		} else if (data === null) {
+		}
+		else if (data === null) {
 			writeHeader(7, 22, writer)
-		} else if (data === undefined) {
+		}
+		else if (data === undefined) {
 			writeHeader(7, 23, writer)
-		} else if (typeof data === "number") {
+		}
+		else if (typeof data === "number") {
 			if (Math.floor(data) === data && data < 9007199254740992 && data > -9007199254740992) {
 				if (data < 0) {
 					writeHeader(1, -1 - data, writer)
@@ -164,15 +179,19 @@ var CBOR = (function () {
 				else {
 					writeHeader(0, data, writer)
 				}
-			} else {
+			}
+			else {
 				writeHeaderRaw(7, 27, writer)
 				writer.writeFloat64(data)
 			}
-		} else if (typeof data === "string") {
+		}
+		else if (typeof data === "string") {
 			writer.writeString(data, length => writeHeader(3, length, writer))
-		} else if (writer.canWriteBinary(data)) {
+		}
+		else if (writer.canWriteBinary(data)) {
 			writer.writeBinary(data, length => writeHeader(2, length, writer))
-		} else if (typeof data === "object") {
+		}
+		else if (typeof data === "object") {
 			if (API.config.useToJSON && typeof data.toJSON === "function") {
 				data = data.toJSON()
 			}
@@ -181,7 +200,8 @@ var CBOR = (function () {
 				i = 0, length = data.length
 				for (i; i < length; i++)
 					encodeWriter(data[i], writer)
-			} else {
+			}
+			else {
 				keys = Object.keys(data)
 				writeHeader(5, keys.length, writer)
 				i = 0, length = keys.length
@@ -190,7 +210,8 @@ var CBOR = (function () {
 					encodeWriter(data[keys[i]], writer)
 				}
 			}
-		} else {
+		}
+		else {
 			throw new Error("CBOR encoding not supported: " + data)
 		}
 	}
@@ -287,7 +308,8 @@ var CBOR = (function () {
 		API.addWriter(format => {
 			if (!format || format === "buffer") {
 				return new BufferWriter()
-			} else if (format === "hex" || format === "base64") {
+			}
+			else if (format === "hex" || format === "base64") {
 				return new BufferWriter(format)
 			}
 		})

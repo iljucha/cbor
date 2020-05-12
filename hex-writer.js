@@ -1,49 +1,55 @@
-import { Writer } from "./writer.js"
-import { BinaryHex } from "./binaryhex.js"
+import Writer from "./writer.js"
+import BinaryHex from "./binaryhex.js"
 
-export function HexWriter(finalFormat) {
-    this._hex = ""
-    this.finalFormat = finalFormat || "hex"
-}
+export default class HexWriter {
+    hex = ""
+    finalFormat
 
-HexWriter.prototype = Object.create(Writer.prototype)
-
-HexWriter.prototype.writeByte = function (value) {
-    if (value < 0 || value > 255) {
-        throw new Error("Byte value out of range: " + value)
+    constructor(finalFormat) {
+        this.finalFormat = finalFormat || "hex"
     }
-    let hex = value.toString(16)
-    if (hex.length == 1) {
-        hex = "0" + hex
+
+    writeByte(value) {
+        if (value < 0 || value > 255) {
+            throw new Error("Byte value out of range: " + value)
+        }
+        let hex = value.toString(16)
+        if (hex.length == 1) {
+            hex = "0" + hex
+        }
+        this._hex += hex
     }
-    this._hex += hex
-}
 
-HexWriter.prototype.canWriteBinary = function (chunk) {
-    return chunk instanceof BinaryHex || (typeof Buffer === "function" && chunk instanceof Buffer)
-}
+    canWriteBinary(chunk) {
+        return chunk instanceof BinaryHex || (typeof Buffer === "function" && chunk instanceof Buffer)
+    }
 
-HexWriter.prototype.writeBinary = function (chunk, lengthFunction) {
-    if (chunk instanceof BinaryHex) {
-        lengthFunction(chunk.length())
-        this._hex += chunk._hex
-    } else if (typeof Buffer === "function" && chunk instanceof Buffer) {
-        lengthFunction(chunk.length)
-        this._hex += chunk.toString("hex")
-    } else {
-        throw new TypeError("HexWriter only accepts BinaryHex or Buffers")
+    writeBinary(chunk, lengthFunction) {
+        if (chunk instanceof BinaryHex) {
+            lengthFunction(chunk.length())
+            this._hex += chunk._hex
+        }
+        else if (typeof Buffer === "function" && chunk instanceof Buffer) {
+            lengthFunction(chunk.length)
+            this._hex += chunk.toString("hex")
+        }
+        else {
+            throw new TypeError("HexWriter only accepts BinaryHex or Buffers")
+        }
+    }
+
+    result() {
+        if (this.finalFormat === "buffer" && typeof Buffer === "function") {
+            return Buffer.from(this._hex, "hex")
+        }
+        return new BinaryHex(this._hex).toString(this.finalFormat)
+    }
+
+    writeString(string, lengthFunction) {
+        let buffer = BinaryHex.fromUtf8String(string)
+        lengthFunction(buffer.length())
+        this._hex += buffer._hex
     }
 }
 
-HexWriter.prototype.result = function () {
-    if (this.finalFormat === "buffer" && typeof Buffer === "function") {
-        return Buffer.from(this._hex, "hex")
-    }
-    return new BinaryHex(this._hex).toString(this.finalFormat)
-}
-
-HexWriter.prototype.writeString = function (string, lengthFunction) {
-    let buffer = BinaryHex.fromUtf8String(string)
-    lengthFunction(buffer.length())
-    this._hex += buffer._hex
-}
+Object.setPrototypeOf(HexWriter, Writer)
