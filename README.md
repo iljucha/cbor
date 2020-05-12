@@ -14,7 +14,7 @@ Simple CBOR encoder/ decoder used in/for my Collection "DB"-Thing.
 
 ## Usage
 ```javascript
-var CBOR = require("./cbor")
+import CBOR = from "./cbor/index.js"
 
 var object = {
   string: "Hello",
