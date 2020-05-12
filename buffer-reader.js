@@ -1,6 +1,6 @@
-var Reader = require("./reader")
+import { Reader } from "./reader.js"
 
-function BufferReader(buffer) {
+export function BufferReader(buffer) {
     this.buffer = buffer
     this.pos = 0
 }
@@ -44,5 +44,3 @@ BufferReader.prototype.readChunk = function (length) {
     this.buffer.copy(result, 0, this.pos, this.pos += length)
     return result
 }
-
-module.exports = BufferReader

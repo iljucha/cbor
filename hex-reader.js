@@ -1,7 +1,7 @@
-var Reader = require("./reader")
-var BinaryHex = require("./binaryhex")
+import { Reader } from "./reader.js"
+import { BinaryHex } from "./binaryhex.js"
 
-function HexReader(hex) {
+export function HexReader(hex) {
 	this.hex = hex
 	this.pos = 0
 }
@@ -27,5 +27,3 @@ HexReader.prototype.readChunk = function (length) {
 	}
 	return new BinaryHex(hex)
 }
-
-module.exports = HexReader

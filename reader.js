@@ -1,4 +1,4 @@
-function Reader() {}
+export function Reader() {}
 
 Reader.prototype.readFloat16 = function() {
     let hlf = this.readUint16()
@@ -57,5 +57,3 @@ Reader.prototype.readUint32 = function() {
 Reader.prototype.readUint64 = function() {
     return this.readUint32()*4294967296 + this.readUint32()
 }
-
-module.exports = Reader

@@ -1,4 +1,4 @@
-function Writer() {}
+export function Writer() {}
 
 Writer.prototype.canWriteBinary = function(chunk) {
     return false
@@ -22,5 +22,3 @@ Writer.prototype.writeUint64 = function(value) {
     this.writeUint32(Math.floor(value/4294967296))
     this.writeUint32(value%4294967296)
 }
-
-module.exports = Writer

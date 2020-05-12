@@ -1,10 +1,10 @@
-var BinaryHex = require("./binaryhex")
-var Reader = require("./reader")
-var Writer = require("./writer")
-var BufferReader = require("./buffer-reader")
-var BufferWriter = require("./buffer-writer")
-var HexReader = require("./hex-reader")
-var HexWriter = require("./hex-writer")
+import { BinaryHex } from "./binaryhex.js"
+import { Reader } from "./reader.js"
+import { Writer } from "./writer.js"
+import { BufferReader } from "./buffer-reader.js"
+import { BufferWriter } from "./buffer-writer.js"
+import { HexReader } from "./hex-reader.js"
+import { HexWriter } from "./hex-writer.js"
 
 var CBOR = (function () {
 	let addEncoders = []
@@ -23,7 +23,7 @@ var CBOR = (function () {
 	}
 
 	function valueFromHeader(header, reader) {
-		let value = header.value;
+		let value = header.value
 		if (value < 24) {
 			return value
 		} else if (value == 24) {
@@ -65,8 +65,8 @@ var CBOR = (function () {
 
 	function decodeReader(reader) {
 		let header = readHeaderRaw(reader), objResult,
-			arrayLength, result, buffer, item, i,
-			tag, decoder
+			arrayLength, result = [], buffer, item, i,
+			tag, decoder, length
 		switch (header.type) {
 			case 0:
 				return valueFromHeader(header, reader)
@@ -258,7 +258,7 @@ var CBOR = (function () {
 		if (typeof tag !== "number" || tag%1 !== 0 || tag < 0) {
 			throw new Error("Tag must be a positive number.")
 		}
-		addEncoders.push({tag: tag, fn: fn})
+		addEncoders.push({ tag, fn })
 		return this
 	}
 
@@ -327,4 +327,4 @@ CBOR.addEncoder(1, regexp => {
 
 CBOR.addDecoder(1, regstr => eval(`(() => ${regstr})()`))
 
-module.exports = CBOR
+export default CBOR

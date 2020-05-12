@@ -1,6 +1,6 @@
-var Writer = require("./writer")
+import { Writer } from "./writer.js"
 
-function BufferWriter(stringFormat) {
+export function BufferWriter(stringFormat) {
     this.byteLength = 0
     this.defaultBufferLength = 16384
     this.latestBuffer = Buffer.alloc(this.defaultBufferLength)
@@ -88,5 +88,3 @@ BufferWriter.prototype.result = function () {
     }
     return result
 }
-
-module.exports = BufferWriter

@@ -1,4 +1,4 @@
-function BinaryHex(hex) {
+export function BinaryHex(hex) {
     this._hex = hex
 }
 
@@ -59,5 +59,3 @@ BinaryHex.fromUtf8String = function (utf8String) {
     }
     return new BinaryHex(hex)
 }
-
-module.exports = BinaryHex

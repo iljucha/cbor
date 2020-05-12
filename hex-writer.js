@@ -1,7 +1,7 @@
-var Writer = require("./writer")
-var BinaryHex = require("./binaryhex")
+import { Writer } from "./writer.js"
+import { BinaryHex } from "./binaryhex.js"
 
-function HexWriter(finalFormat) {
+export function HexWriter(finalFormat) {
     this._hex = ""
     this.finalFormat = finalFormat || "hex"
 }
@@ -47,5 +47,3 @@ HexWriter.prototype.writeString = function (string, lengthFunction) {
     lengthFunction(buffer.length())
     this._hex += buffer._hex
 }
-
-module.exports = HexWriter
