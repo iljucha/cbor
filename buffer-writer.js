@@ -1,14 +1,13 @@
 import Writer from "./writer.js"
 
-export default class BufferWriter {
-    byteLength = 0
-    defaultBufferLength = 16384
-    latestBuffer = Buffer.alloc(this.defaultBufferLength)
-    latestBufferOffset = 0
-    completeBuffers = []
-    stringFormat
-
+export default class BufferWriter extends Writer {
     constructor(stringFormat) {
+        super()
+        this.byteLength = 0
+        this.defaultBufferLength = 16384
+        this.latestBuffer = Buffer.alloc(this.defaultBufferLength)
+        this.latestBufferOffset = 0
+        this.completeBuffers = []
         this.stringFormat = stringFormat
     }
 
@@ -92,5 +91,3 @@ export default class BufferWriter {
         return result
     }
 }
-
-Object.setPrototypeOf(BufferWriter, Writer)

@@ -1,10 +1,10 @@
 import Reader from "./reader.js"
 import BinaryHex from "./binaryhex.js"
 
-export default class HexReader {
-	pos = 0
-
+export default class HexReader extends Reader{
 	constructor(hex) {
+		super()
+		this.pos = 0
 		this.hex = hex
 	}
 
@@ -28,5 +28,3 @@ export default class HexReader {
 		return new BinaryHex(hex)
 	}
 }
-
-Object.setPrototypeOf(HexReader, Reader)

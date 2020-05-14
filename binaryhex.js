@@ -1,6 +1,4 @@
 export default class BinaryHex {
-    _hex
-
     constructor(hex) {
         this._hex = hex
     }

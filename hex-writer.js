@@ -1,11 +1,10 @@
 import Writer from "./writer.js"
 import BinaryHex from "./binaryhex.js"
 
-export default class HexWriter {
-    hex = ""
-    finalFormat
-
+export default class HexWriter extends Writer {
     constructor(finalFormat) {
+        super()
+        this.hex = ""
         this.finalFormat = finalFormat || "hex"
     }
 
@@ -51,5 +50,3 @@ export default class HexWriter {
         this._hex += buffer._hex
     }
 }
-
-Object.setPrototypeOf(HexWriter, Writer)

@@ -1,10 +1,8 @@
 import Reader from "./reader.js"
 
-export default class BufferReader {
-    buffer
-    pos
-
+export default class BufferReader extends Reader {
     constructor(buffer) {
+        super()
         this.buffer = buffer
         this.pos = 0
     }
@@ -47,5 +45,3 @@ export default class BufferReader {
         return result
     }
 }
-
-Object.setPrototypeOf(BufferReader, Reader)
