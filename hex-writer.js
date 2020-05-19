@@ -2,9 +2,11 @@ import Writer from "./writer.js"
 import BinaryHex from "./binaryhex.js"
 
 export default class HexWriter extends Writer {
+    hex = ""
+    finalFormat
+
     constructor(finalFormat) {
         super()
-        this.hex = ""
         this.finalFormat = finalFormat || "hex"
     }
 

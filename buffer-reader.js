@@ -1,10 +1,12 @@
 import Reader from "./reader.js"
 
 export default class BufferReader extends Reader {
+    buffer
+    pos = 0
+
     constructor(buffer) {
         super()
         this.buffer = buffer
-        this.pos = 0
     }
 
     peekByte() {

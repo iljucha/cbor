@@ -2,9 +2,11 @@ import Reader from "./reader.js"
 import BinaryHex from "./binaryhex.js"
 
 export default class HexReader extends Reader{
+	pos = 0
+	hex
+
 	constructor(hex) {
 		super()
-		this.pos = 0
 		this.hex = hex
 	}
 

@@ -330,23 +330,24 @@ var CBOR = (function () {
 		}
 	})
 
+
+	API.addEncoder(0, date => {
+		if (date instanceof Date) {
+			return date.toISOString()
+		}
+	})
+
+	API.addDecoder(0, isoString => new Date(isoString))
+
+	API.addEncoder(1, regexp => {
+		if (regexp instanceof RegExp) {
+			return regexp.toString()
+		}
+	})
+
+	API.addDecoder(1, regstr => eval(`(() => ${regstr})()`))
+
 	return API
 })()
-
-CBOR.addEncoder(0, date => {
-	if (date instanceof Date) {
-		return date.toISOString()
-	}
-})
-
-CBOR.addDecoder(0, isoString => new Date(isoString))
-
-CBOR.addEncoder(1, regexp => {
-	if (regexp instanceof RegExp) {
-		return regexp.toString()
-	}
-})
-
-CBOR.addDecoder(1, regstr => eval(`(() => ${regstr})()`))
 
 export default CBOR
